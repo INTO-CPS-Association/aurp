@@ -12,8 +12,8 @@ The system comprises:
 - Mean Well [UHP-1000-48](https://www.meanwell.com/webapp/product/search.aspx?prod=UHP-1000) 1000 W / 48 V DC (21 A) power supply configured with 3x XT-60 connectors
 
 <p align="center">
-  <img src="resources/202203_system.jpg" alt="The system as of March 2022" height="280"/>
-  <img src="resources/202203_system_render.PNG" alt="A render of the system as of March 2022" height="280"/>
+  <img src="resources/202203_system.jpg" alt="The system as of March 2022" height="270"/>
+  <img src="resources/202203_system_render.PNG" alt="A render of the system as of March 2022" height="270"/>
 </p>
 
 ## USB driver permissions
