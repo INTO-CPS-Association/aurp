@@ -8,6 +8,9 @@ The system comprises:
 - ODrive [D5065](https://eu.odriverobotics.com/shop/odrive-custom-motor-d5065) 270 KV BLDC motor
   - CUI [AMT102-V](https://www.cuidevices.com/product/resource/amt10.pdf) encoder - 8192 CPR quadrature with a single index mark
   - Thermistor (NTC 10k 1% 3435) thermally connected to motor windings to permit temperature monitoring
+
+_For detailed information on the D6374 and D5065 motors, see the [ODrive motor guide](https://docs.google.com/spreadsheets/d/12vzz7XVEK6YNIOqH0jAz51F5VUpc-lJEs3mmkWP1H4Y/edit#gid=0) ([PDF export](https://github.com/INTO-CPS-Association/aurp/blob/main/resources/ODrive_motor_guide.pdf) from 23-03-2022)_
+
 - ODrive [V3.6 control board](https://eu.odriverobotics.com/shop/odrive-v36) - 56 V with connectors
   - 50 W power resistor (measured resistance of 2 &Omega;)
   - 2x Noctua [NF-A4x20 5V PWM](https://noctua.at/en/products/fan/nf-a4x20-5v-pwm) fan
