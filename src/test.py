@@ -5,6 +5,7 @@ import time
 import math
 from sys import exit
 import matplotlib.pyplot as plt
+from odrive.utils import dump_errors
 od = odrive.find_any()
 
 # ================= Config =====================
@@ -32,17 +33,20 @@ od.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
 while od.axis0.current_state != AXIS_STATE_IDLE:
     time.sleep(0.1)
 
+dump_errors(od)
+
 print(f"error is {od.axis0.error}")
 print(f"encoder.config.phase_offset {od.axis0.encoder.config.phase_offset}")
 print(f"od.encoder.config.direction: {od.axis0.encoder.config.direction}")
 
 if od.axis0.error != 0:
+    dump_errors(od)
     raise RuntimeError("Unable to calibrate")
     exit(-1)
 
 od.axis0.encoder.config.pre_calibrated = True
 
-od.save_configuration()
+# od.save_configuration()
 
 
 # od.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
