@@ -1,6 +1,7 @@
 from time import sleep, time
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 import math
 
 import odrive
@@ -65,7 +66,7 @@ if __name__ == "__main__":
 
     assert_no_errors(odrv0, "torque control")
 
-    t_sample = 0.01
+    t_sample = 0.001
     t_cur = 0.0
     t_end = 5.0
     t_last = t_cur
@@ -118,9 +119,14 @@ if __name__ == "__main__":
     position_estimate = np.array(position_estimate)
 
     # export
-    sampled_data = np.array([t, position_estimate * 2 * np.pi, torque_estimated])
-    header_txt = "timestamp actual_q_0 actual_current_0"
-    np.savetxt("onelink_data.csv", sampled_data, delimiter=" ", header=header_txt)
+    d = {
+        "timestamp": t,
+        "actual_q_0": position_estimate * 2 * np.pi,
+        "actual_current_0": current_estimate,
+    }
+
+    df = pd.DataFrame(data=d)
+    df.to_csv("onelink_data.csv", sep=" ", index=False)
 
     # plotting
 
