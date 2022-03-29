@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     t_sample = 0.01
     t_cur = 0.0
-    t_end = 6.0
+    t_end = 5.0
     t_last = t_cur
     t_offset = time()
     current_estimate = []
@@ -77,10 +77,9 @@ if __name__ == "__main__":
     velocity_setpoint = []
     velocity_estimate = []
     torque_setpoint = []
-    tau_estimated = []
 
     def pos_setpoint_t(t):
-        return math.sin(0.05 * t_end * t**3 + 2 * t) * 0.5 + 0.5
+        return math.sin(0.05 * t_end * t**3 + 2 * t) * 0.5
 
     def torque_setpoint_t(t):
         if t < 1:
@@ -108,11 +107,22 @@ if __name__ == "__main__":
 
         t_cur = time() - t_offset
 
+    # convert to np arrays
     torque_estimated = (
         np.array(current_estimate) * odrv0.axis0.motor.config.torque_constant
     )
-
+    current_setpoint = (
+        np.array(torque_setpoint) / odrv0.axis0.motor.config.torque_constant
+    )
     t = np.array(t) - np.min(t)
+    position_estimate = np.array(position_estimate)
+
+    # export
+    sampled_data = np.array([t, position_estimate * 2 * np.pi, torque_estimated])
+    header_txt = "timestamp actual_q_0 actual_current_0"
+    np.savetxt("onelink_data.csv", sampled_data, delimiter=" ", header=header_txt)
+
+    # plotting
 
     fig, ax = plt.subplots()
     ax.plot(t, current_estimate, marker="*")
@@ -123,15 +133,18 @@ if __name__ == "__main__":
 
     ax1.plot(t, position_estimate, label="estimated")
     ax1.plot(t, position_setpoint, label="setpoint")
-    ax1.set_ylabel("position(t)")
+    ax1.set_ylabel("position(t) [turns]")
 
     ax2.plot(t, velocity_estimate, label="estimated")
     ax2.plot(t, velocity_setpoint, label="setpoint")
-    ax2.set_ylabel("velocity(t)")
+    ax2.axhline(odrv0.axis0.controller.config.vel_limit, color="green")
+    ax2.set_ylabel("velocity(t) [turns/s]")
 
-    ax3.plot(t, torque_estimated, label="estimated")
-    ax3.plot(t, torque_setpoint, label="setpoint")
+    ax3.plot(t, current_estimate, label="estimated")
+    ax3.plot(t, current_setpoint, label="setpoint")
+    ax3.axhline(odrv0.axis0.motor.config.current_lim, color="green", label="limit")
     ax3.set_xlabel("t[s]")
-    ax3.set_ylabel("current(t)")
+    ax3.set_ylabel("current(t) [A]")
+    ax3.legend()
 
     plt.show()
